@@ -1,9 +1,26 @@
-// TODO: Crear las funciones, objetos y variables indicadas en el enunciado
+// TODO: Crear las funciones, objetos
 
 let presupuesto = 0;
 
-function actualizarPresupuesto() {
-  // TODO
+function actualizarPresupuesto(valor) {
+  if (typeof valor === "number" && valor > 0) {
+    return (presupuesto = valor);
+  } else {
+    alert("Valor no válida");
+    return -1;
+  }
+}
+
+function mostrarPresupuesto() {
+  return `Tu presupuesto actual es de ${presupuesto} €`;
+}
+
+function CrearGasto(valor) {
+  if (typeof valor === "number" && valor >= 0) {
+    this.valor = valor;
+  } else {
+    this.valor = 0;
+  }
 }
 
 function mostrarPresupuesto() {
