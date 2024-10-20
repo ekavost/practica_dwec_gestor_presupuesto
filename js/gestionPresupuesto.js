@@ -31,8 +31,19 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.fecha = ComprobarFecha(fecha) || new Date();
   this.etiquetas = [...etiquetas];
 
-  this.mostrarGasto = function () {
-    return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+  this.mostrarGastoCompleto = function () {
+    let listaEtiquetas = etiquetas.reduce(
+      (texto, etiqueta) => texto.concat("- ", etiqueta, "\n"),
+      ""
+    );
+    let fechaAux = new Date(this.fecha);
+    return `Gasto correspondiente a ${this.descripcion} con valor ${
+      this.valor
+    } €.\nFecha: ${fechaAux.toLocaleString()}\nEtiquetas:\n${listaEtiquetas}`;
+  };
+
+  this.actualizarFecha = function (newFecha) {
+    this.fecha = ComprobarFecha(newFecha) || this.fecha;
   };
 
   this.actualizarDescripcion = function (newDescripcion) {
@@ -40,6 +51,19 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   };
   this.actualizarValor = function (newValor) {
     if (comprobarPositivo(newValor)) return (this.valor = newValor);
+  };
+
+  this.anyadirEtiquetas = function (...newEtiquetas) {
+    for (let etiqueta of newEtiquetas)
+      if (!this.etiquetas.includes(etiqueta)) {
+        this.etiquetas.push(etiqueta);
+      }
+  };
+
+  this.borrarEtiquetas = function (...etiquetasToRemove) {
+    this.etiquetas = this.etiquetas.filter(
+      (etiqueta) => !etiquetasToRemove.includes(etiqueta)
+    );
   };
 }
 
