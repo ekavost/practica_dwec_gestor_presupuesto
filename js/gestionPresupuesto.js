@@ -20,10 +20,23 @@ function mostrarPresupuesto() {
 function listarGastos() {
   return gastos;
 }
-function anyadirGasto() {}
-function borrarGasto() {}
-function calcularTotalGastos() {}
-function calcularBalance() {}
+
+function anyadirGasto(gasto) {
+  gasto.id = idGasto;
+  idGasto++;
+  gastos.push(gasto);
+}
+
+function borrarGasto(id) {
+  gastos = gastos.filter((gasto) => gasto.id !== id);
+}
+
+function calcularTotalGastos() {
+  return gastos.reduce((total, gasto) => (total += gasto.valor), 0);
+}
+function calcularBalance() {
+  return presupuesto - calcularTotalGastos();
+}
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.descripcion = descripcion;
