@@ -3,6 +3,7 @@ let gastos = [];
 let idGasto = 0;
 
 let comprobarPositivo = (numero) => Number.isFinite(numero) && numero >= 0;
+let ComprobarFecha = (fecha) => Date.parse(fecha);
 
 function actualizarPresupuesto(valor) {
   if (comprobarPositivo(valor) == true) return (presupuesto = valor);
@@ -16,15 +17,19 @@ function mostrarPresupuesto() {
   return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function listarGastos() {}
+function listarGastos() {
+  return gastos;
+}
 function anyadirGasto() {}
 function borrarGasto() {}
 function calcularTotalGastos() {}
 function calcularBalance() {}
 
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.descripcion = descripcion;
-  comprobarPositivo(valor) ? (this.valor = valor) : (this.valor = 0);
+  this.valor = comprobarPositivo(valor) ? valor : 0;
+  this.fecha = ComprobarFecha(fecha) || new Date();
+  this.etiquetas = [...etiquetas];
 
   this.mostrarGasto = function () {
     return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
