@@ -2,17 +2,19 @@ let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
 
-let comprobarPositivo = (numero) => typeof numero === "number" && numero >= 0;
+let comprobarPositivo = (numero) => Number.isFinite(numero) && numero >= 0;
 
-let actualizarPresupuesto = (valor) => {
+function actualizarPresupuesto(valor) {
   if (comprobarPositivo(valor) == true) return (presupuesto = valor);
   else {
     console.log("Valor no válida");
     return -1;
   }
-};
+}
 
-let mostrarPresupuesto = () => `Tu presupuesto actual es de ${presupuesto} €`;
+function mostrarPresupuesto() {
+  return `Tu presupuesto actual es de ${presupuesto} €`;
+}
 
 function listarGastos() {}
 function anyadirGasto() {}
