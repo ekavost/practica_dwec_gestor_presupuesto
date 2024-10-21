@@ -2,15 +2,15 @@ let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
 
-let comprobarPositivo = (numero) => Number.isFinite(numero) && numero >= 0;
+let comprobarPositivo = (numero) =>
+  Number.isFinite(numero) && numero >= 0 ? numero : false;
 let ComprobarFecha = (fecha) => Date.parse(fecha);
 
 function actualizarPresupuesto(valor) {
-  if (comprobarPositivo(valor)) return (presupuesto = valor);
-  else {
+  if (!comprobarPositivo(valor)) {
     console.log("Valor no válida");
     return -1;
-  }
+  } else return (presupuesto = valor);
 }
 
 function mostrarPresupuesto() {
@@ -41,9 +41,13 @@ function calcularBalance() {
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.descripcion = descripcion;
-  this.valor = comprobarPositivo(valor) ? valor : 0;
+  this.valor = comprobarPositivo(valor) || 0;
   this.fecha = ComprobarFecha(fecha) || new Date();
   this.etiquetas = [...etiquetas];
+
+  this.mostrarGasto = function () {
+    return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+  };
 
   this.mostrarGastoCompleto = function () {
     let listaEtiquetas = etiquetas.reduce(
@@ -66,7 +70,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   };
 
   this.actualizarValor = function (newValor) {
-    if (comprobarPositivo(newValor)) this.valor = newValor;
+    this.valor = comprobarPositivo(newValor) || this.valor;
   };
 
   this.anyadirEtiquetas = function (...newEtiquetas) {
