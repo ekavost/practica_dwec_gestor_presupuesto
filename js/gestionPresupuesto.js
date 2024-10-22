@@ -39,6 +39,10 @@ function calcularBalance() {
   return presupuesto - calcularTotalGastos();
 }
 
+function filtrarGastos() {}
+
+function agruparGastos() {}
+
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.descripcion = descripcion;
   this.valor = comprobarPositivo(valor) || 0;
@@ -99,4 +103,6 @@ export {
   borrarGasto,
   calcularTotalGastos,
   calcularBalance,
+  filtrarGastos,
+  agruparGastos,
 };
