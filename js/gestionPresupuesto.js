@@ -1,3 +1,5 @@
+"use strict";
+
 let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
@@ -38,9 +40,9 @@ function calcularTotalGastos() {
 function calcularBalance() {
   return presupuesto - calcularTotalGastos();
 }
-
+//TODO
 function filtrarGastos() {}
-
+//TODO
 function agruparGastos() {}
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
@@ -54,7 +56,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   };
 
   this.mostrarGastoCompleto = function () {
-    let listaEtiquetas = etiquetas.reduce(
+    let listaEtiquetas = this.etiquetas.reduce(
       (output, etiqueta) => output.concat("- ", etiqueta, "\n"),
       ""
     );
@@ -88,6 +90,17 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.etiquetas = this.etiquetas.filter(
       (etiqueta) => !etiquetasToRemove.includes(etiqueta)
     );
+  };
+  //TODO
+  this.obtenerPeriodoAgrupacion = function (periodo) {
+    let fecha = new Date(this.fecha);
+    let anyo = `${fecha.getFullYear()}`;
+    let mes = ("0" + (fecha.getMonth() + 1).toString()).slice(-2);
+    let dia = ("0" + fecha.getDate().toString()).slice(-2);
+
+    if (periodo === "anyo") return anyo;
+    else if (periodo === "mes") return `${anyo}-${mes}`;
+    else if (periodo === "dia") return `${anyo}-${mes}-${dia}`;
   };
 }
 
