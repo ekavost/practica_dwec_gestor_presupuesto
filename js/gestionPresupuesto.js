@@ -6,7 +6,7 @@ let idGasto = 0;
 
 let comprobarPositivo = (numero) =>
   Number.isFinite(numero) && numero >= 0 ? numero : false;
-let ComprobarFecha = (fecha) => Date.parse(fecha);
+let comprobarFecha = (fecha) => Date.parse(fecha);
 
 function actualizarPresupuesto(valor) {
   if (!comprobarPositivo(valor)) {
@@ -41,14 +41,46 @@ function calcularBalance() {
   return presupuesto - calcularTotalGastos();
 }
 //TODO
-function filtrarGastos() {}
+function filtrarGastos(filtros) {
+  return gastos.filter(function (gasto) {
+    let result = true;
+    if (filtros.fechaDesde) {
+      result &&= gasto.fecha >= comprobarFecha(filtros.fechaDesde);
+    }
+    if (filtros.fechaHasta) {
+      result &&= gasto.fecha <= Date.parse(filtros.fechaHasta);
+    }
+    if (filtros.valorMinimo) {
+      result &&= gasto.valor >= filtros.valorMinimo;
+    }
+    if (filtros.valorMaximo) {
+      result &&= gasto.valor <= filtros.valorMaximo;
+    }
+    if (filtros.descripcionContiene) {
+      result &&= gasto.descripcion
+        .toLowerCase()
+        .includes(filtros.descripcionContiene.toLowerCase());
+    }
+    if (filtros.etiquetasTiene) {
+      let resultAux = false;
+      for (const etiqueta of filtros.etiquetasTiene) {
+        if (gasto.etiquetas.indexOf(etiqueta) > -1) {
+          resultAux = true;
+        }
+      }
+      result &&= resultAux;
+    }
+    return result;
+  });
+}
+
 //TODO
 function agruparGastos() {}
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.descripcion = descripcion;
   this.valor = comprobarPositivo(valor) || 0;
-  this.fecha = ComprobarFecha(fecha) || new Date();
+  this.fecha = comprobarFecha(fecha) || new Date();
   this.etiquetas = [...etiquetas];
 
   this.mostrarGasto = function () {
@@ -68,7 +100,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   };
 
   this.actualizarFecha = function (newFecha) {
-    this.fecha = ComprobarFecha(newFecha) || this.fecha;
+    this.fecha = comprobarFecha(newFecha) || this.fecha;
   };
 
   this.actualizarDescripcion = function (newDescripcion) {
@@ -91,16 +123,23 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
       (etiqueta) => !etiquetasToRemove.includes(etiqueta)
     );
   };
-  //TODO
+
   this.obtenerPeriodoAgrupacion = function (periodo) {
     let fecha = new Date(this.fecha);
     let anyo = `${fecha.getFullYear()}`;
     let mes = ("0" + (fecha.getMonth() + 1).toString()).slice(-2);
     let dia = ("0" + fecha.getDate().toString()).slice(-2);
-
-    if (periodo === "anyo") return anyo;
-    else if (periodo === "mes") return `${anyo}-${mes}`;
-    else if (periodo === "dia") return `${anyo}-${mes}-${dia}`;
+    switch (periodo) {
+      case "anyo":
+        return anyo;
+        break;
+      case "mes":
+        return `${anyo}-${mes}`;
+        break;
+      case "dia":
+        return `${anyo}-${mes}-${dia}`;
+        break;
+    }
   };
 }
 
