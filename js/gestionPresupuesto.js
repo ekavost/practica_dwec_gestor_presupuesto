@@ -61,7 +61,7 @@ function filtrarGastos(filtros) {
     if (filtros.etiquetasTiene && result) {
       let resultAux = false;
       filtros.etiquetasTiene.forEach((etiqueta) => {
-        if (gasto.etiquetas.includes(etiqueta.toLowerCase())) {
+        if (gasto.etiquetas.includes(etiqueta)) {
           resultAux = true;
         }
       });
