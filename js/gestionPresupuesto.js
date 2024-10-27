@@ -85,11 +85,6 @@ function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
 }
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
-  this.descripcion = descripcion;
-  this.valor = comprobarPositivo(valor) || 0;
-  this.fecha = comprobarFecha(fecha) || new Date();
-  this.etiquetas = [...etiquetas].map((etiqueta) => etiqueta.toLowerCase());
-
   this.mostrarGasto = function () {
     return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
   };
@@ -141,6 +136,12 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         break;
     }
   };
+
+  this.descripcion = descripcion;
+  this.valor = comprobarPositivo(valor) || 0;
+  this.fecha = comprobarFecha(fecha) || new Date();
+  this.etiquetas = [];
+  this.anyadirEtiquetas(...etiquetas);
 }
 
 // // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
