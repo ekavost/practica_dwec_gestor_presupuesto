@@ -16,6 +16,7 @@ import { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb } from "./g
 let newPresupuesto = actualizarPresupuesto(1500);
 let stringPresupuesto = mostrarPresupuesto(newPresupuesto);
 mostrarDatoEnId(stringPresupuesto, "presupuesto");
+
 let gasto1 = new CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida");
 let gasto2 = new CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida");
 let gasto3 = new CrearGasto("Bonobús", 18.6, "2020-05-26", "transporte");
@@ -31,7 +32,7 @@ anyadirGasto(gasto5);
 anyadirGasto(gasto6);
 
 let totalGastos = calcularTotalGastos();
-mostrarDatoEnId(totalGastos, "gastos-totales");
+mostrarDatoEnId(totalGastos.toFixed(2), "gastos-totales");
 
 let totalBalance = calcularBalance();
 mostrarDatoEnId(totalBalance, "balance-total");
