@@ -17,12 +17,12 @@ function mostrarGastoWeb(idElemento, gasto) {
   let divFecha = document.createElement("div");
   divFecha.className = "gasto-fecha";
   divFecha.innerHTML = new Date(gasto.fecha).toLocaleDateString();
-  divDescripcion.append(divFecha);
+  divGasto.append(divFecha);
 
   let divValor = document.createElement("div");
   divValor.className = "gasto-valor";
   divValor.innerHTML = gasto.valor;
-  divFecha.append(divValor);
+  divGasto.append(divValor);
 
   let divEtiquetas = document.createElement("div");
   divEtiquetas.className = "gasto-etiquetas";
@@ -32,7 +32,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     spanEtiqueta.innerHTML = etiqueta + " ";
     divEtiquetas.append(spanEtiqueta);
   }
-  divValor.append(divEtiquetas);
+  divGasto.append(divEtiquetas);
 }
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
@@ -44,19 +44,20 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let titulo = document.createElement("h1");
   titulo.innerHTML = "Gastos agrupados por " + periodo;
   divGrupo.append(titulo);
+
   for (const key in agrup) {
     let divAgrupGastos = document.createElement("div");
     divAgrupGastos.className = "agrupacion-dato";
 
     let spanNombre = document.createElement("span");
     spanNombre.className = "agrupacion-dato-clave";
-    spanNombre.innerHTML = key;
+    spanNombre.innerHTML = key + ": ";
     divAgrupGastos.append(spanNombre);
 
     let spanValor = document.createElement("span");
     spanValor.className = "agrupacion-dato-valor";
-    spanValor.innerHTML = agrup[key];
-    spanNombre.append(spanValor);
+    spanValor.innerHTML = agrup[key].toFixed(2);
+    divAgrupGastos.append(spanValor);
 
     divGrupo.append(divAgrupGastos);
   }
