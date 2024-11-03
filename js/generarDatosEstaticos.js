@@ -31,3 +31,31 @@ anyadirGasto(gasto6);
 
 let totalGastos = calcularTotalGastos();
 mostrarDatoEnId(totalGastos, "gastos-totales");
+
+let totalBalance = calcularBalance();
+mostrarDatoEnId(totalBalance, "balance-total");
+
+let listaCompletoGastos = listarGastos();
+for (const gasto of listaCompletoGastos) {
+  mostrarGastoWeb("listado-gastos-completo", gasto);
+}
+
+let listaGastosFiltro1 = filtrarGastos({ fechaDesde: "2021-09-01", fechaHasta: "2021-09-30" });
+for (const gasto of listaGastosFiltro1) {
+  mostrarGastoWeb("listado-gastos-filtrado-1", gasto);
+}
+
+let listaGastosFiltro2 = filtrarGastos({ valorMinimo: 50 });
+for (const gasto of listaGastosFiltro2) {
+  mostrarGastoWeb("listado-gastos-filtrado-2", gasto);
+}
+
+let listaGastosFiltro3 = filtrarGastos({ valorMinimo: 200, etiquetas: ["seguro"] });
+for (const gasto of listaGastosFiltro3) {
+  mostrarGastoWeb("listado-gastos-filtrado-3", gasto);
+}
+
+let listaGastosFiltro4 = filtrarGastos({ valorMaximo: 50, etiquetas: ["comida", "transporte"] });
+for (const gasto of listaGastosFiltro4) {
+  mostrarGastoWeb("listado-gastos-filtrado-4", gasto);
+}
