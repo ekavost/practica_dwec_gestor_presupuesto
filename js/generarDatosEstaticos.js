@@ -11,7 +11,8 @@ import {
   agruparGastos,
 } from "./gestionPresupuesto.js";
 
-import { mostrarDatoEnId, mostrarGastoWeb } from "./gestionPresupuestoWeb.js";
+import { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb } from "./gestionPresupuestoWeb.js";
+
 let newPresupuesto = actualizarPresupuesto(1500);
 let stringPresupuesto = mostrarPresupuesto(newPresupuesto);
 mostrarDatoEnId(stringPresupuesto, "presupuesto");
@@ -59,3 +60,10 @@ let listaGastosFiltro4 = filtrarGastos({ valorMaximo: 50, etiquetas: ["comida", 
 for (const gasto of listaGastosFiltro4) {
   mostrarGastoWeb("listado-gastos-filtrado-4", gasto);
 }
+
+let gastosAgrupDia = agruparGastos("dia");
+mostrarGastosAgrupadosWeb("agrupacion-dia", gastosAgrupDia, "día");
+let gastosAgrupMes = agruparGastos("mes");
+mostrarGastosAgrupadosWeb("agrupacion-mes", gastosAgrupMes, "mes");
+let gastosAgrupAnyo = agruparGastos("anyo");
+mostrarGastosAgrupadosWeb("agrupacion-anyo", gastosAgrupAnyo, "año");

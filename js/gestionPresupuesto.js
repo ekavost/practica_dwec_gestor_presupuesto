@@ -33,7 +33,7 @@ function borrarGasto(id) {
 }
 
 function calcularTotalGastos() {
-  return gastos.reduce((total, gasto) => (total += gasto.valor), 0);
+  return gastos.reduce((total, gasto) => +(total += gasto.valor).toFixed(2), 0);
 }
 
 function calcularBalance() {
