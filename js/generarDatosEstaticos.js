@@ -35,7 +35,7 @@ let totalGastos = calcularTotalGastos();
 mostrarDatoEnId(totalGastos.toFixed(2), "gastos-totales");
 
 let totalBalance = calcularBalance();
-mostrarDatoEnId(totalBalance, "balance-total");
+mostrarDatoEnId(totalBalance.toFixed(2), "balance-total");
 
 let listaCompletoGastos = listarGastos();
 for (const gasto of listaCompletoGastos) {
