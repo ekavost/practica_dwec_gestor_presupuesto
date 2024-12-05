@@ -1,7 +1,9 @@
+import * as gestionPresupuesto from "./gestionPresupuesto.js";
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
 }
 function mostrarGastoWeb(idElemento, gasto) {
+  // TODO
   let doc = document.getElementById(idElemento);
 
   let divGasto = document.createElement("div");
@@ -60,5 +62,24 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     divGrupo.append(divAgrupGastos);
   }
 }
-
+function repintar() {
+  // TODO
+}
+function actualizarPresupuestoWeb() {
+  // TODO
+  // document.getElementById("actualizarpresupuesto").addEventListener("click", );
+}
+function nuevoGastoWeb() {
+  // TODO
+  // document.getElementById("anyadirgasto").addEventListener("click");
+}
+function EditarHandle() {
+  // TODO
+}
+function BorrarHandle() {
+  // TODO
+}
+function BorrarEtiquetasHandle() {
+  // TODO
+}
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
