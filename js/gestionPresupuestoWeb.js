@@ -116,7 +116,7 @@ function nuevoGastoWeb() {
   gestionPresupuesto.anyadirGasto(newGasto);
   repintar();
 }
-function EditarHandle(event) {
+function EditarHandle() {
   this.handleEvent = function () {
     let fechaAux = new Date(this.gasto.fecha);
 
@@ -128,18 +128,17 @@ function EditarHandle(event) {
     this.gasto.actualizarValor(valor);
     this.gasto.actualizarDescripcion(descripcion);
     this.gasto.actualizarFecha(fecha);
-    this.gasto.anyadirEtiquetas(etiquetas);
-
+    this.gasto.anyadirEtiquetas(...etiquetas);
     repintar();
   };
 }
-function BorrarHandle(event) {
+function BorrarHandle() {
   this.handleEvent = function () {
     gestionPresupuesto.borrarGasto(this.gasto.id);
     repintar();
   };
 }
-function BorrarEtiquetasHandle(event) {
+function BorrarEtiquetasHandle() {
   this.handleEvent = function () {
     this.gasto.borrarEtiquetas(this.etiqueta);
     repintar();
