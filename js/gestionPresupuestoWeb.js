@@ -36,6 +36,11 @@ function mostrarGastoWeb(idElemento, gasto) {
     spanEtiqueta.className = "gasto-etiquetas-etiqueta";
     spanEtiqueta.innerText = etiqueta + " ";
     divEtiquetas.append(spanEtiqueta);
+
+    let etiquetaABorrar = new BorrarEtiquetasHandle();
+    etiquetaABorrar.gasto = gasto;
+    etiquetaABorrar.etiqueta = etiqueta;
+    spanEtiqueta.addEventListener("click", etiquetaABorrar);
   }
   divGasto.append(divEtiquetas);
 
@@ -43,16 +48,19 @@ function mostrarGastoWeb(idElemento, gasto) {
   btnEdit.setAttribute("type", "button");
   btnEdit.textContent = "Edit";
   btnEdit.className = "gasto-editar";
-  let gastoEditado = new EditarHandle();
-  gastoEditado.gasto = gasto;
-  btnEdit.addEventListener("click", gastoEditado);
+  let gastoAEditar = new EditarHandle();
+  gastoAEditar.gasto = gasto;
+  btnEdit.addEventListener("click", gastoAEditar);
   divEtiquetas.after(btnEdit);
 
   let btnRemove = document.createElement("button");
   btnRemove.setAttribute("type", "button");
   btnRemove.textContent = "Borrar";
   btnRemove.className = "gasto-borrar";
-  divGasto.append(btnRemove);
+  let gastoABorrar = new BorrarHandle();
+  gastoABorrar.gasto = gasto;
+  btnRemove.addEventListener("click", gastoABorrar);
+  btnEdit.after(btnRemove);
 }
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
@@ -110,9 +118,11 @@ function nuevoGastoWeb() {
 }
 function EditarHandle(event) {
   this.handleEvent = function () {
+    let fechaAux = new Date(this.gasto.fecha);
+
     let descripcion = prompt("Descripción", this.gasto.descripcion);
     let valor = Number(prompt("Valor", this.gasto.valor));
-    let fecha = prompt("Fecha", this.gasto.fecha);
+    let fecha = prompt("Fecha", fechaAux.toLocaleDateString());
     let etiquetas = prompt("Etiquetas", this.gasto.etiquetas).split(", ");
 
     this.gasto.actualizarValor(valor);
