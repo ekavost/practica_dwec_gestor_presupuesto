@@ -1,6 +1,10 @@
 "use strict";
-
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
+
+let listaGastos = gestionPresupuesto.listarGastos();
+
+document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
+
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
 }
@@ -69,14 +73,15 @@ function repintar() {
   mostrarDatoEnId(gestionPresupuesto.calcularTotalGastos(), "gastos-totales");
   mostrarDatoEnId(gestionPresupuesto.calcularBalance(), "balance-total");
   let divListadoGastosCompleto = document.getElementById("listado-gastos-completo");
-  divListadoGastosCompleto.innerHTML = "";
-  for (const gasto of gestionPresupuesto.listarGastos()) {
-    divListadoGastosCompleto.innerHTML = mostrarGastoWeb("listado-gastos-completo", gasto);
+  divListadoGastosCompleto.innerHTML = "hikj";
+  for (const gasto of listaGastos) {
+    mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
 function actualizarPresupuestoWeb() {
-  // TODO
-  // document.getElementById("actualizarpresupuesto").addEventListener("click", );
+  let newPresupuesto = Number(prompt("Introduce un presupuesto"));
+  gestionPresupuesto.actualizarPresupuesto(newPresupuesto);
+  repintar();
 }
 function nuevoGastoWeb() {
   // TODO
