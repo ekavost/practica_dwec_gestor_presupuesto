@@ -1,9 +1,8 @@
 "use strict";
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
 
-let listaGastos = gestionPresupuesto.listarGastos();
-
 document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
+document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
 
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
@@ -72,9 +71,10 @@ function repintar() {
   mostrarDatoEnId(gestionPresupuesto.mostrarPresupuesto(), "presupuesto");
   mostrarDatoEnId(gestionPresupuesto.calcularTotalGastos(), "gastos-totales");
   mostrarDatoEnId(gestionPresupuesto.calcularBalance(), "balance-total");
-  let divListadoGastosCompleto = document.getElementById("listado-gastos-completo");
-  divListadoGastosCompleto.innerHTML = "hikj";
-  for (const gasto of listaGastos) {
+
+  document.getElementById("listado-gastos-completo").innerHTML = "";
+
+  for (const gasto of gestionPresupuesto.listarGastos()) {
     mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
@@ -84,8 +84,15 @@ function actualizarPresupuestoWeb() {
   repintar();
 }
 function nuevoGastoWeb() {
-  // TODO
-  // document.getElementById("anyadirgasto").addEventListener("click");
+  let descripcion = prompt("Descripción");
+  let valor = Number(prompt("Valor"));
+  let fecha = prompt("Fecha");
+  let etiquetas = prompt("Etiquetas").split(", ");
+
+  let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+
+  gestionPresupuesto.anyadirGasto(newGasto);
+  repintar();
 }
 function EditarHandle() {
   // TODO
