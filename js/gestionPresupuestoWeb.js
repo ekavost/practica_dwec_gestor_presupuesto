@@ -106,8 +106,6 @@ function nuevoGastoWeb() {
   repintar();
 }
 function EditarHandle(gasto) {
-  this.gasto = gasto;
-
   this.handleEvent = function () {
     let descripcion = prompt("Descripción", gasto.descripcion);
     let valor = Number(prompt("Valor", gasto.valor));
@@ -123,12 +121,15 @@ function EditarHandle(gasto) {
   };
 }
 function BorrarHandle(gasto) {
-  this.gasto = gasto;
-
   this.handleEvent = function () {
     gestionPresupuesto.borrarGasto(this.gasto.id);
     repintar();
   };
 }
-function BorrarEtiquetasHandle() {}
+function BorrarEtiquetasHandle(gasto, etiqueta) {
+  this.handleEvent = function () {
+    this.gasto.borrarEtiquetas(this.etiqueta);
+    repintar();
+  };
+}
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
