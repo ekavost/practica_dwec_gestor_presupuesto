@@ -8,7 +8,6 @@ function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
 }
 function mostrarGastoWeb(idElemento, gasto) {
-  // TODO
   let doc = document.getElementById(idElemento);
 
   let divGasto = document.createElement("div");
@@ -39,6 +38,18 @@ function mostrarGastoWeb(idElemento, gasto) {
     divEtiquetas.append(spanEtiqueta);
   }
   divGasto.append(divEtiquetas);
+
+  let btnEdit = document.createElement("button");
+  btnEdit.setAttribute("type", "button");
+  btnEdit.textContent = "Edit";
+  btnEdit.className = "gasto-editar";
+  divGasto.append(btnEdit);
+
+  let btnRemove = document.createElement("button");
+  btnRemove.setAttribute("type", "button");
+  btnRemove.textContent = "Borrar";
+  btnRemove.className = "gasto-borrar";
+  divGasto.append(btnRemove);
 }
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
@@ -94,13 +105,30 @@ function nuevoGastoWeb() {
   gestionPresupuesto.anyadirGasto(newGasto);
   repintar();
 }
-function EditarHandle() {
-  // TODO
+function EditarHandle(gasto) {
+  this.gasto = gasto;
+
+  this.handleEvent = function () {
+    let descripcion = prompt("Descripción", gasto.descripcion);
+    let valor = Number(prompt("Valor", gasto.valor));
+    let fecha = prompt("Fecha", gasto.fecha);
+    let etiquetas = prompt("Etiquetas", gasto.etiquetas).split(", ");
+
+    this.gasto.actualizarValor(valor);
+    this.gasto.actualizarDescripcion(descripcion);
+    this.gasto.actualizarFecha(fecha);
+    this.gasto.anyadirEtiquetas(etiquetas);
+
+    repintar();
+  };
 }
-function BorrarHandle() {
-  // TODO
+function BorrarHandle(gasto) {
+  this.gasto = gasto;
+
+  this.handleEvent = function () {
+    gestionPresupuesto.borrarGasto(this.gasto.id);
+    repintar();
+  };
 }
-function BorrarEtiquetasHandle() {
-  // TODO
-}
+function BorrarEtiquetasHandle() {}
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
