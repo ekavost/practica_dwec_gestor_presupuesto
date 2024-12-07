@@ -2,24 +2,48 @@
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
 
-let controlesPrincipales = document.querySelector("#controlesprincipales");
 let btnActualizarPresupuesto = document.querySelector("#actualizarpresupuesto");
 let btnAnyadirGasto = document.querySelector("#anyadirgasto");
 let btnActualizarGastoForm = document.querySelector("#anyadirgasto-formulario");
 
-let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
-let formulario = plantillaFormulario.querySelector("form");
-let btnCancelarForm = formulario.querySelector("button.cancelar");
-
 btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
-btnActualizarGastoForm.addEventListener("click", function () {
+btnActualizarGastoForm.addEventListener("click", nuevoGastoWebFormulario);
+
+function nuevoGastoWebFormulario(evento) {
+  let controlesPrincipales = document.querySelector("#controlesprincipales");
+  let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
+  let formulario = plantillaFormulario.querySelector("form");
+  let btnCancelarForm = formulario.querySelector("button.cancelar");
+
+  formulario.addEventListener("submit", function (eventoSubmit) {
+    eventoSubmit.preventDefault();
+    let descripcion = eventoSubmit.currentTarget.elements.descripcion.value;
+    let valor = Number(eventoSubmit.currentTarget.elements.valor.value);
+    let fecha = eventoSubmit.currentTarget.elements.fecha.value;
+    let etiquetas = eventoSubmit.currentTarget.etiquetas.value.split(", ");
+
+    let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+    gestionPresupuesto.anyadirGasto(newGasto);
+
+    repintar();
+    btnActualizarGastoForm.removeAttribute("disabled");
+  });
+
+  let formACancelar = new CancelarForm();
+  formACancelar.formulario = formulario;
+  formACancelar.activarBtnActualizarGastoForm = evento.currentTarget;
+  btnCancelarForm.addEventListener("click", formACancelar);
+
+  this.setAttribute("disabled", "true");
   controlesPrincipales.after(plantillaFormulario);
-  btnActualizarGastoForm.setAttribute("disabled", "true");
-});
-
-formulario.addEventListener("submit", nuevoGastoWebFormulario);
-
+}
+function CancelarForm() {
+  this.handleEvent = function () {
+    this.formulario.remove();
+    this.activarBtnActualizarGastoForm.removeAttribute("disabled");
+  };
+}
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
 }
@@ -133,19 +157,7 @@ function nuevoGastoWeb() {
 
   repintar();
 }
-function nuevoGastoWebFormulario(evento) {
-  evento.preventDefault();
 
-  let descripcion = this.elements.descripcion.value;
-  let valor = Number(this.elements.valor.value);
-  let fecha = this.elements.fecha.value;
-  let etiquetas = this.etiquetas.value.split(", ");
-
-  let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
-  gestionPresupuesto.anyadirGasto(newGasto);
-  repintar();
-  btnActualizarGastoForm.setAttribute("disabled", "false");
-}
 function EditarHandle() {
   this.handleEvent = function () {
     let fechaAux = new Date(this.gasto.fecha);
@@ -174,4 +186,5 @@ function BorrarEtiquetasHandle() {
     repintar();
   };
 }
+
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
