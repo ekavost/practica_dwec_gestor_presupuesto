@@ -10,18 +10,18 @@ btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
 btnActualizarGastoForm.addEventListener("click", nuevoGastoWebFormulario);
 
-function nuevoGastoWebFormulario(evento) {
+function nuevoGastoWebFormulario() {
   let controlesPrincipales = document.querySelector("#controlesprincipales");
   let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
   let formulario = plantillaFormulario.querySelector("form");
   let btnCancelarForm = formulario.querySelector("button.cancelar");
 
-  formulario.addEventListener("submit", function (eventoSubmit) {
-    eventoSubmit.preventDefault();
-    let descripcion = eventoSubmit.currentTarget.elements.descripcion.value;
-    let valor = Number(eventoSubmit.currentTarget.elements.valor.value);
-    let fecha = eventoSubmit.currentTarget.elements.fecha.value;
-    let etiquetas = eventoSubmit.currentTarget.etiquetas.value.split(", ");
+  formulario.addEventListener("submit", function (evento) {
+    evento.preventDefault();
+    let descripcion = this.descripcion.value;
+    let valor = Number(this.valor.value);
+    let fecha = this.fecha.value;
+    let etiquetas = this.etiquetas.value.split(", ");
 
     let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
     gestionPresupuesto.anyadirGasto(newGasto);
@@ -32,7 +32,7 @@ function nuevoGastoWebFormulario(evento) {
 
   let formACancelar = new CancelarForm();
   formACancelar.formulario = formulario;
-  formACancelar.activarBtnActualizarGastoForm = evento.currentTarget;
+  formACancelar.activarBtnActualizarGastoForm = this;
   btnCancelarForm.addEventListener("click", formACancelar);
 
   this.setAttribute("disabled", "true");
