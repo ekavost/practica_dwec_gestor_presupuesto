@@ -1,8 +1,24 @@
 "use strict";
+
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
 
-document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
-document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
+let controlesPrincipales = document.querySelector("#controlesprincipales");
+let btnActualizarPresupuesto = document.querySelector("#actualizarpresupuesto");
+let btnAnyadirGasto = document.querySelector("#anyadirgasto");
+let btnActualizarGastoForm = document.querySelector("#anyadirgasto-formulario");
+
+let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
+let formulario = plantillaFormulario.querySelector("form");
+let btnCancelarForm = formulario.querySelector("button.cancelar");
+
+btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
+btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
+btnActualizarGastoForm.addEventListener("click", function () {
+  controlesPrincipales.after(plantillaFormulario);
+  btnActualizarGastoForm.setAttribute("disabled", "true");
+});
+
+formulario.addEventListener("submit", nuevoGastoWebFormulario);
 
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
@@ -114,7 +130,21 @@ function nuevoGastoWeb() {
   let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
 
   gestionPresupuesto.anyadirGasto(newGasto);
+
   repintar();
+}
+function nuevoGastoWebFormulario(evento) {
+  evento.preventDefault();
+
+  let descripcion = this.elements.descripcion.value;
+  let valor = Number(this.elements.valor.value);
+  let fecha = this.elements.fecha.value;
+  let etiquetas = this.etiquetas.value.split(", ");
+
+  let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+  gestionPresupuesto.anyadirGasto(newGasto);
+  repintar();
+  btnActualizarGastoForm.setAttribute("disabled", "false");
 }
 function EditarHandle() {
   this.handleEvent = function () {
