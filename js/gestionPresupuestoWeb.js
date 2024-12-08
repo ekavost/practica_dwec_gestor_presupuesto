@@ -165,7 +165,7 @@ function nuevoGastoWebFormulario() {
   btnCancelarForm.addEventListener("click", formACancelar);
 
   this.setAttribute("disabled", "true");
-  controlesPrincipales.after(plantillaFormulario);
+  controlesPrincipales.append(plantillaFormulario);
 }
 function EditarHandleformulario() {
   this.handleEvent = function () {
