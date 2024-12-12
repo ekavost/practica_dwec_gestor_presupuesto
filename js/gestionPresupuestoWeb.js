@@ -1,8 +1,8 @@
 "use strict";
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
-let controlesPrincipales = document.querySelector("#controlesprincipales");
 
+let controlesPrincipales = document.querySelector("#controlesprincipales");
 let btnActualizarPresupuesto = document.querySelector("#actualizarpresupuesto");
 let btnAnyadirGasto = document.querySelector("#anyadirgasto");
 let btnActualizarGastoForm = document.querySelector("#anyadirgasto-formulario");
@@ -16,22 +16,13 @@ function mostrarDatoEnId(valor, idElemento) {
 }
 function mostrarGastoWeb(idElemento, gasto) {
   let doc = document.getElementById(idElemento);
-
   let divGasto = document.createElement("div");
   divGasto.className = "gasto";
+  divGasto.innerHTML = `
+  <div class="gasto-descripcion">${gasto.descripcion}</div>
+  <div class="gasto-fecha">${new Date(gasto.fecha).toLocaleDateString()}</div> 
+  <div class="gasto-valor">${gasto.valor}</div>`;
   doc.append(divGasto);
-
-  let divDescripcion = document.createElement("div");
-  divDescripcion.className = "gasto-descripcion";
-  divDescripcion.innerText = gasto.descripcion;
-
-  let divFecha = document.createElement("div");
-  divFecha.className = "gasto-fecha";
-  divFecha.innerText = new Date(gasto.fecha).toLocaleDateString();
-
-  let divValor = document.createElement("div");
-  divValor.className = "gasto-valor";
-  divValor.innerText = gasto.valor;
 
   let divEtiquetas = document.createElement("div");
   divEtiquetas.className = "gasto-etiquetas";
@@ -46,8 +37,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     etiquetaABorrar.etiqueta = etiqueta;
     spanEtiqueta.addEventListener("click", etiquetaABorrar);
   }
-
-  divGasto.append(divDescripcion, divFecha, divValor, divEtiquetas);
+  divGasto.append(divEtiquetas);
 
   let btnEdit = document.createElement("button");
   btnEdit.setAttribute("type", "button");
@@ -86,28 +76,18 @@ function mostrarGastoWeb(idElemento, gasto) {
 }
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
-
   let divGrupo = document.createElement("div");
   divGrupo.className = "agrupacion";
+  divGrupo.innerHTML = `<h1>Gastos agrupados por ${periodo}</h1>`;
   doc.append(divGrupo);
-
-  let titulo = document.createElement("h1");
-  titulo.innerText = "Gastos agrupados por " + periodo;
-  divGrupo.append(titulo);
 
   for (const key in agrup) {
     let divAgrupGastos = document.createElement("div");
     divAgrupGastos.className = "agrupacion-dato";
-
-    let spanNombre = document.createElement("span");
-    spanNombre.className = "agrupacion-dato-clave";
-    spanNombre.innerText = key + ": ";
-    divAgrupGastos.append(spanNombre);
-
-    let spanValor = document.createElement("span");
-    spanValor.className = "agrupacion-dato-valor";
-    spanValor.innerText = agrup[key].toFixed(2);
-    divAgrupGastos.append(spanValor);
+    divAgrupGastos.innerHTML = `
+    <span class="agrupacion-dato-clave">${key + ": "}</span>
+    <span class="agrupacion-dato-valor">${agrup[key].toFixed(2)}</span>
+  </div>`;
     divGrupo.append(divAgrupGastos);
   }
 }
