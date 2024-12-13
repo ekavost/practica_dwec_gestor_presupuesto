@@ -268,10 +268,13 @@ function filtrarGastosWeb(evento) {
 
 function guardarGastosWeb() {
   let gastos = gestionPresupuesto.listarGastos();
-  // console.log(JSON.stringify(gastos));
   localStorage.setItem("GestorGastosDWEC", JSON.stringify(gastos));
 }
 
-function cargarGastosWeb() {}
+function cargarGastosWeb() {
+  let gastos = localStorage.getItem("GestorGastosDWEC");
+  gestionPresupuesto.cargarGastos(gastos ? JSON.parse(gastos) : []);
+  repintar();
+}
 
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
