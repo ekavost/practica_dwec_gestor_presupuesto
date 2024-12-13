@@ -6,16 +6,21 @@ let controlesPrincipales = document.querySelector("#controlesprincipales");
 let btnActualizarPresupuesto = document.querySelector("#actualizarpresupuesto");
 let btnAnyadirGasto = document.querySelector("#anyadirgasto");
 let btnActualizarGastoForm = document.querySelector("#anyadirgasto-formulario");
+let btnGuardarGastos = document.querySelector("#guardar-gastos");
+let btnCargarGastos = document.querySelector("#cargar-gastos");
 let formFiltrado = document.querySelector("#formulario-filtrado");
 
 btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
 btnActualizarGastoForm.addEventListener("click", nuevoGastoWebFormulario);
+btnGuardarGastos.addEventListener("click", guardarGastosWeb);
+btnCargarGastos.addEventListener("click", cargarGastosWeb);
 formFiltrado.addEventListener("submit", filtrarGastosWeb);
 
 function mostrarDatoEnId(valor, idElemento) {
   document.getElementById(idElemento).innerHTML = valor;
 }
+
 function mostrarGastoWeb(idElemento, gasto) {
   let doc = document.getElementById(idElemento);
   let divGasto = document.createElement("div");
@@ -76,6 +81,7 @@ function mostrarGastoWeb(idElemento, gasto) {
   btnRemove.addEventListener("click", gastoABorrar);
   btnEdit.after(btnRemove);
 }
+
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
   let divGrupo = document.createElement("div");
@@ -93,6 +99,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     divGrupo.append(divAgrupGastos);
   }
 }
+
 function repintar() {
   mostrarDatoEnId(gestionPresupuesto.mostrarPresupuesto(), "presupuesto");
   mostrarDatoEnId(gestionPresupuesto.calcularTotalGastos(), "gastos-totales");
@@ -104,11 +111,13 @@ function repintar() {
     mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
+
 function actualizarPresupuestoWeb() {
   let newPresupuesto = Number(prompt("Introduce un presupuesto"));
   gestionPresupuesto.actualizarPresupuesto(newPresupuesto);
   repintar();
 }
+
 function nuevoGastoWeb() {
   let descripcion = prompt("Descripción");
   let valor = Number(prompt("Valor"));
@@ -121,6 +130,7 @@ function nuevoGastoWeb() {
 
   repintar();
 }
+
 function nuevoGastoWebFormulario() {
   let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
   let formulario = plantillaFormulario.querySelector("form");
@@ -149,6 +159,7 @@ function nuevoGastoWebFormulario() {
   this.setAttribute("disabled", "true");
   controlesPrincipales.append(plantillaFormulario);
 }
+
 function EditarHandleformulario() {
   this.handleEvent = function () {
     let plantillaFormulario = document.querySelector("#formulario-template").content.cloneNode(true);
@@ -192,24 +203,28 @@ function EditarHandle() {
     repintar();
   };
 }
+
 function BorrarHandle() {
   this.handleEvent = function () {
     gestionPresupuesto.borrarGasto(this.gasto.id);
     repintar();
   };
 }
+
 function BorrarEtiquetasHandle() {
   this.handleEvent = function () {
     this.gasto.borrarEtiquetas(this.etiqueta);
     repintar();
   };
 }
+
 function CancelarForm() {
   this.handleEvent = function () {
     this.formulario.remove();
     this.activarBtn.removeAttribute("disabled");
   };
 }
+
 function EditarGasto() {
   this.handleEvent = function () {
     this.gasto.actualizarDescripcion(this.formulario.descripcion.value);
@@ -219,6 +234,7 @@ function EditarGasto() {
     repintar();
   };
 }
+
 function filtrarGastosWeb(evento) {
   evento.preventDefault();
 
@@ -249,4 +265,13 @@ function filtrarGastosWeb(evento) {
     mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
+
+function guardarGastosWeb() {
+  let gastos = gestionPresupuesto.listarGastos();
+  // console.log(JSON.stringify(gastos));
+  localStorage.setItem("GestorGastosDWEC", JSON.stringify(gastos));
+}
+
+function cargarGastosWeb() {}
+
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
