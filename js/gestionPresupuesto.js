@@ -89,6 +89,15 @@ function transformarListadoEtiquetas(etiquetas) {
   return etiquetas.split(regex);
 }
 
+function cargarGastos(gastosAlmacenamiento) {
+  gastos = [];
+  for (let gasto of gastosAlmacenamiento) {
+    let gastoRehidratado = new CrearGasto();
+    Object.assign(gastoRehidratado, gasto);
+    gastos.push(gastoRehidratado);
+  }
+}
+
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.mostrarGasto = function () {
     return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
@@ -164,4 +173,5 @@ export {
   filtrarGastos,
   agruparGastos,
   transformarListadoEtiquetas,
+  cargarGastos,
 };
