@@ -8,6 +8,7 @@ let btnAnyadirGasto = document.querySelector("#anyadirgasto");
 let btnActualizarGastoForm = document.querySelector("#anyadirgasto-formulario");
 let btnGuardarGastos = document.querySelector("#guardar-gastos");
 let btnCargarGastos = document.querySelector("#cargar-gastos");
+let btnCargarGastosApi = document.querySelector("#cargar-gastos-api");
 let formFiltrado = document.querySelector("#formulario-filtrado");
 
 btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
@@ -15,6 +16,7 @@ btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
 btnActualizarGastoForm.addEventListener("click", nuevoGastoWebFormulario);
 btnGuardarGastos.addEventListener("click", guardarGastosWeb);
 btnCargarGastos.addEventListener("click", cargarGastosWeb);
+btnCargarGastosApi.addEventListener("click", cargarGastosApi);
 formFiltrado.addEventListener("submit", filtrarGastosWeb);
 
 function mostrarDatoEnId(valor, idElemento) {
@@ -274,6 +276,14 @@ function guardarGastosWeb() {
 function cargarGastosWeb() {
   let gastos = localStorage.getItem("GestorGastosDWEC");
   gestionPresupuesto.cargarGastos(gastos ? JSON.parse(gastos) : []);
+  repintar();
+}
+
+async function cargarGastosApi() {
+  const url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${document.getElementById("nombre_usuario")}`;
+  let response = await fetch(url);
+  let data = await response.json();
+  gestionPresupuesto.cargarGastos(data);
   repintar();
 }
 
