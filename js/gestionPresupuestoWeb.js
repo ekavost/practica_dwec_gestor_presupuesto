@@ -10,6 +10,11 @@ let btnGuardarGastos = document.querySelector("#guardar-gastos");
 let btnCargarGastos = document.querySelector("#cargar-gastos");
 let btnCargarGastosApi = document.querySelector("#cargar-gastos-api");
 let formFiltrado = document.querySelector("#formulario-filtrado");
+let spanEtiqueta = document.querySelectorAll(".gasto-etiquetas-etiqueta");
+let btnEditGasto = document.querySelectorAll(".gasto-editar");
+let btnRemoveGasto = document.querySelectorAll(".gasto-borrar");
+let btnRemoveGastoApi = document.querySelectorAll(".gasto-borrar-api");
+let btnEditGastoForm = document.querySelectorAll(".gasto-editar-formulario");
 
 btnActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 btnAnyadirGasto.addEventListener("click", nuevoGastoWeb);
@@ -56,7 +61,12 @@ function mostrarGastoWeb(idElemento, gasto) {
   let btnRemove = document.createElement("button");
   btnRemove.setAttribute("type", "button");
   btnRemove.textContent = "Borrar";
-  btnRemove.className = "gasto-borrar";
+  btnRemove.className = "gasato-borrar";
+
+  let btnRemoveApi = document.createElement("button");
+  btnRemove.setAttribute("type", "button");
+  btnRemove.textContent = "Borrar (API)";
+  btnRemove.className = "gasato-borrar-api";
 
   let btnEditForm = document.createElement("button");
   btnEditForm.setAttribute("type", "button");
