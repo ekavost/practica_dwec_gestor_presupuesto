@@ -2,7 +2,7 @@
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
 
-const url = "https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/";
+const urlApi = "https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/";
 let username = document.getElementById("nombre_usuario");
 
 let controlesPrincipales = document.querySelector("#controlesprincipales");
@@ -167,6 +167,23 @@ function nuevoGastoWebFormulario() {
   let btnCancelarForm = formulario.querySelector("button.cancelar");
   btnCancelarForm.addEventListener("click", formACancelar);
 
+  let btnEnviarGastoApi = formulario.querySelector("button.gasto-enviar-api");
+  btnEnviarGastoApi.addEventListener("click", async function () {
+    let descripcion = formulario.descripcion.value;
+    let valor = +formulario.valor.value;
+    let fecha = formulario.fecha.value;
+    let etiquetas = formulario.etiquetas.value.split(", ");
+
+    let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+    let urlGastos = urlApi + username.value;
+    await fetch(urlGastos, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newGasto),
+    });
+    cargarGastosApi();
+  });
+
   this.setAttribute("disabled", "true");
   controlesPrincipales.append(plantillaFormulario);
 }
@@ -224,7 +241,7 @@ function BorrarHandle() {
 
 function BorrarHandleApi() {
   this.handleEvent = async function () {
-    const urlGasto = url + username.value + "/" + this.gasto.gastoId;
+    const urlGasto = urlApi + username.value + "/" + this.gasto.gastoId;
     await fetch(urlGasto, { method: "DELETE" });
     cargarGastosApi();
   };
@@ -297,7 +314,7 @@ function cargarGastosWeb() {
 }
 
 async function cargarGastosApi() {
-  const urlGastos = url + username.value;
+  const urlGastos = urlApi + username.value;
 
   let response = await fetch(urlGastos);
   let gasto = await response.json();
