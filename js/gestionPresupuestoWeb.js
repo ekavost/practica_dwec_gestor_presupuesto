@@ -2,6 +2,9 @@
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
 
+const url = "https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/";
+let username = document.getElementById("nombre_usuario");
+
 let controlesPrincipales = document.querySelector("#controlesprincipales");
 let btnActualizarPresupuesto = document.querySelector("#actualizarpresupuesto");
 let btnAnyadirGasto = document.querySelector("#anyadirgasto");
@@ -218,11 +221,11 @@ function BorrarHandle() {
     repintar();
   };
 }
-//TODO url
+
 function BorrarHandleApi() {
   this.handleEvent = async function () {
-    const url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${document.getElementById("nombre_usuario").value}/${this.gasto.gastoId}`;
-    await fetch(url, { method: "DELETE" });
+    const urlGasto = url + username.value + "/" + this.gasto.gastoId;
+    await fetch(urlGasto, { method: "DELETE" });
     cargarGastosApi();
   };
 }
@@ -292,11 +295,11 @@ function cargarGastosWeb() {
   gestionPresupuesto.cargarGastos(gastos ? JSON.parse(gastos) : []);
   repintar();
 }
-//TODO url
-async function cargarGastosApi() {
-  const url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${document.getElementById("nombre_usuario").value}`;
 
-  let response = await fetch(url);
+async function cargarGastosApi() {
+  const urlGastos = url + username.value;
+
+  let response = await fetch(urlGastos);
   let gasto = await response.json();
   gestionPresupuesto.cargarGastos(gasto);
   repintar();
