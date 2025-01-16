@@ -1,3 +1,6 @@
+//Try/catch
+//Activar/desactivar botónes
+
 "use strict";
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
@@ -28,20 +31,16 @@ function mostrarDatoEnId(valor, idElemento) {
 
 function mostrarGastoWeb(idElemento, gasto) {
   let doc = document.getElementById(idElemento);
-  let divGasto = document.createElement("div");
-  divGasto.className = "gasto";
+  let divGasto = createElement("div", "gasto");
   divGasto.innerHTML = `
   <div class="gasto-descripcion">${gasto.descripcion}</div>
   <div class="gasto-fecha">${new Date(gasto.fecha).toLocaleDateString()}</div> 
   <div class="gasto-valor">${gasto.valor}</div>`;
   doc.append(divGasto);
 
-  let divEtiquetas = document.createElement("div");
-  divEtiquetas.className = "gasto-etiquetas";
+  let divEtiquetas = createElement("div", "gasto-etiquetas");
   for (const etiqueta of gasto.etiquetas) {
-    let spanEtiqueta = document.createElement("span");
-    spanEtiqueta.className = "gasto-etiquetas-etiqueta";
-    spanEtiqueta.innerText = etiqueta + " ";
+    let spanEtiqueta = createElement("span", "gasto-etiquetas-etiqueta", etiqueta + " ");
     divEtiquetas.append(spanEtiqueta);
 
     let etiquetaABorrar = new BorrarEtiquetasHandle();
@@ -51,25 +50,17 @@ function mostrarGastoWeb(idElemento, gasto) {
   }
   divGasto.append(divEtiquetas);
 
-  let btnEdit = document.createElement("button");
+  let btnEdit = createElement("button", "gasto-editar", "Editar");
   btnEdit.setAttribute("type", "button");
-  btnEdit.textContent = "Editar";
-  btnEdit.className = "gasto-editar";
 
-  let btnRemove = document.createElement("button");
+  let btnRemove = createElement("button", "gasto-borrar", "Borrar");
   btnRemove.setAttribute("type", "button");
-  btnRemove.textContent = "Borrar";
-  btnRemove.className = "gasto-borrar";
 
-  let btnRemoveApi = document.createElement("button");
+  let btnRemoveApi = createElement("button", "gasto-borrar-api", "Borrar (API)");
   btnRemoveApi.setAttribute("type", "button");
-  btnRemoveApi.textContent = "Borrar (API)";
-  btnRemoveApi.className = "gasto-borrar-api";
 
-  let btnEditForm = document.createElement("button");
+  let btnEditForm = createElement("button", "gasto-editar-formulario", "Editar (formulario)");
   btnEditForm.setAttribute("type", "button");
-  btnEditForm.textContent = "Editar (formulario)";
-  btnEditForm.className = "gasto-editar-formulario";
 
   divGasto.append(btnEdit, btnRemove, btnRemoveApi, btnEditForm);
 
@@ -95,14 +86,12 @@ function mostrarGastoWeb(idElemento, gasto) {
 
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   let doc = document.getElementById(idElemento);
-  let divGrupo = document.createElement("div");
-  divGrupo.className = "agrupacion";
+  let divGrupo = createElement("div", "agrupacion");
   divGrupo.innerHTML = `<h1>Gastos agrupados por ${periodo}</h1>`;
   doc.append(divGrupo);
 
   for (const key in agrup) {
-    let divAgrupGastos = document.createElement("div");
-    divAgrupGastos.className = "agrupacion-dato";
+    let divAgrupGastos = createElement("div", "agrupacion-dato");
     divAgrupGastos.innerHTML = `
     <span class="agrupacion-dato-clave">${key + ": "}</span>
     <span class="agrupacion-dato-valor">${agrup[key].toFixed(2)}</span>
@@ -249,8 +238,15 @@ function BorrarHandle() {
 function BorrarHandleApi() {
   this.handleEvent = async function () {
     const urlGasto = urlApi + username.value + "/" + this.gasto.gastoId;
-    await fetch(urlGasto, { method: "DELETE" });
-    cargarGastosApi();
+    try {
+      const response = await fetch(urlGasto, { method: "DELETE" });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      cargarGastosApi();
+    } catch (error) {
+      console.error("Error al borrar el gasto:", error);
+    }
   };
 }
 
@@ -276,12 +272,19 @@ function EnviarFormApi() {
     this.gasto.anyadirEtiquetas(...this.formulario.etiquetas.value.split(","));
     const urlGasto = urlApi + username.value + "/" + this.gasto.gastoId;
 
-    await fetch(urlGasto, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.gasto),
-    });
-    cargarGastosApi();
+    try {
+      const response = await fetch(urlGasto, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(this.gasto),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      cargarGastosApi();
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+    }
   };
 }
 
@@ -339,11 +342,24 @@ function cargarGastosWeb() {
 
 async function cargarGastosApi() {
   const urlGastos = urlApi + username.value;
+  try {
+    let response = await fetch(urlGastos);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+    let gasto = await response.json();
+    gestionPresupuesto.cargarGastos(gasto);
+    repintar();
+  } catch (error) {
+    console.error("Error al cargar los gastos:", error);
+  }
+}
 
-  let response = await fetch(urlGastos);
-  let gasto = await response.json();
-  gestionPresupuesto.cargarGastos(gasto);
-  repintar();
+function createElement(type, className, text = "") {
+  let element = document.createElement(type);
+  element.className = className;
+  element.textContent = text;
+  return element;
 }
 
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
