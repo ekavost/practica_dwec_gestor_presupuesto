@@ -1,6 +1,3 @@
-//Try/catch
-//Activar/desactivar botónes
-
 "use strict";
 
 import * as gestionPresupuesto from "./gestionPresupuesto.js";
@@ -211,6 +208,7 @@ function EditarHandleformulario() {
     btnEnviarFormApi.addEventListener("click", formAEnviar);
   };
 }
+
 function EditarHandle() {
   this.handleEvent = function () {
     let fechaAux = new Date(this.gasto.fecha);
